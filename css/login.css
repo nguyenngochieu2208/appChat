@@ -1,0 +1,20 @@
+body{
+  background-color: #f5f6f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* background: linear-gradient(0deg, #B066FE , #63E2FF);
+  background-repeat: no-repeat; */
+}
+
+.main-form{
+  margin-top: 150px;
+  box-shadow: 2px 3px 5px rgb(84, 84, 84);
+}
+
+@media screen and (max-width : 560px) {
+  .main-form{
+    margin-top: 90px;
+  }
+}
