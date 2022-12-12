@@ -13,7 +13,9 @@
 
 <body>
 
-    <?php require_once "connectDB.php" ?>
+    <?php require_once "connectDB.php";
+        session_start();
+     ?>
 
 
     <?php 
@@ -35,17 +37,25 @@
         $data = $conn->query($sql);
         $kq = $data->fetch();
 
+        $idUser = $kq['idUser'];
+        $nameUser = $kq['nameUser'];
+
         if($kq == false){
             echo '<script type ="text/JavaScript">';  
             echo 'alert("THÔNG TIN ĐĂNG NHẬP SAI")';  
             echo '</script>';  
         }
 
+        
+
 
         elseif(($gmailphoneUser == $kq['gmailUser'] || $gmailphoneUser == $kq['phoneUser'] ) && $passUser == $kq['passUser'] )
         {
+            $_SESSION["idUser"]= $idUser;
+            $_SESSION["nameUser"]= $nameUser;
             header("location: appChat.php");
         }
+        
     }
 
 ?>
