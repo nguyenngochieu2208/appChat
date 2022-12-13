@@ -16,20 +16,22 @@
         $phoneUser = $_POST["phoneUser"];
         $pass = $_POST["passUser"];
         $passUser = md5($pass);
+
+        if($nameUser == null){ echo "Vui lòng nhập tên!\n";}
+        if($gmailUser == null){ echo "Vui lòng nhập địa chỉ!\n";}
+        if($phoneUser == null){ echo "Vui lòng nhập số điện thoại!\n";}
+        if($pass == null){ echo "Vui lòng nhập ngày sinh!\n";}
     }
 
 
-    $sql = "SELECT * FROM inforuser";
-    $data = $conn->query($sql);
-    $rows = $data->fetchAll();
+    // $sql = "SELECT * FROM inforuser";
+    // $data = $conn->query($sql);
+    // $rows = $data->fetchAll();
 
-    if($nameUser == ""){ echo "Vui lòng nhập tên!\n";}
-    if($gmailUser == ""){ echo "Vui lòng nhập địa chỉ!\n";}
-    if($phoneUser == ""){ echo "Vui lòng nhập số điện thoại!\n";}
-    if($passUser == ""){ echo "Vui lòng nhập ngày sinh!\n";}
+    
 
 
-    print_r($rows['phoneUser']) ;
+
     if($nameUser != "" && $gmailUser != "" && $phoneUser != "" && $passUser != "" ){
         if($gmailUser == $rows['gmailUser']){
             echo '<script type ="text/JavaScript">';  

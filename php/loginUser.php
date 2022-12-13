@@ -22,6 +22,8 @@
 
     $gmailphoneUser = null;
     $passUser = null;
+    $idUser = null;
+    $nameUser = null    ;
 
     if(isset($_POST["login"])){
         $gmailphoneUser = $_POST['gmailphoneUser'] ;
@@ -36,9 +38,7 @@
         $sql = "SELECT * FROM inforuser WHERE gmailUser = '$gmailphoneUser' OR phoneUser = '$gmailphoneUser' AND passUser = '$passUser' ";
         $data = $conn->query($sql);
         $kq = $data->fetch();
-
-        $idUser = $kq['idUser'];
-        $nameUser = $kq['nameUser'];
+        
 
         if($kq == false){
             echo '<script type ="text/JavaScript">';  
@@ -46,13 +46,17 @@
             echo '</script>';  
         }
 
-        
-
 
         elseif(($gmailphoneUser == $kq['gmailUser'] || $gmailphoneUser == $kq['phoneUser'] ) && $passUser == $kq['passUser'] )
         {
+            $idUser = $kq['idUser'];
+            $nameUser = $kq['nameUser'];    
             $_SESSION["idUser"]= $idUser;
             $_SESSION["nameUser"]= $nameUser;
+
+            $sql = "INSERT INTO loginhistory (idUser, nameUser , statusUser) VALUES ('$idUser','$nameUser','1') ";
+            $conn->exec($sql);
+
             header("location: appChat.php");
         }
         
@@ -83,7 +87,8 @@
                     <div class="d-flex flex-column justify-content-end">
                         <div class="d-flex justify-content-end mt-3"><input class="form-control bg-primary text-white"
                                 type="submit" name="login" value="Login"></div>
-                        <a class="d-flex justify-content-end text-decoration-none mt-2" href="registerUser.php">Create an
+                        <a class="d-flex justify-content-end text-decoration-none mt-2" href="registerUser.php">Create
+                            an
                             account!</a>
                     </div>
                 </form>
