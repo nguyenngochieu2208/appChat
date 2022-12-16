@@ -7,7 +7,7 @@ include('../connectDB.php');
 session_start();
 
 $sql = "
-SELECT * FROM loginhistory 
+SELECT * FROM inforuser
 WHERE idUser != '".$_SESSION['idUser']."' 
 ";
 
@@ -18,41 +18,30 @@ $statement->execute();
 $result = $statement->fetchAll();
 
 $output = '
-<table class="table table-bordered table-striped">
-	<tr>
-		<th width="40%">Username</td>
-		<th width="20%">Status</td>
-		<th width="10%">Action</td>
-	</tr>
+<div class = "w-100 mt-4 " >
 ';
 
 foreach($result as $row)
-	// thời gian nhận tin nhắn
-	
-{
-	$status = '';
-	$current_timestamp = strtotime(date("h:i:s d-m-Y") );
-	$current_timestamp = date("h:i:s d-m-Y", $current_timestamp);
-	$user_last_activity = fetch_user_last_activity($row['idUser'], $conn);
-	if($user_last_activity > $current_timestamp)    
+{	
+	if($row['statusUser'] == 0)
 	{
-		$status = '<span class="label label-success">Online</span>';
+		$status = '<span style="height:30px; width:60px;"  class="w-100 label label-danger">Offline</span>';
 	}
-	else
-	{
-		$status = '<span class="label label-danger">Offline</span>';
-	}
-	// cứ 5s cập nhật trạng thái mới xem có tin nhắn chờ nào k và hiển thị đối phương đang nhập tin nhắn
-	$output .= '
-	<tr>
 
-		<td>'.$status.'</td>
-		<td><button type="button" class="btn btn-info btn-xs start_chat" data-touserid="'.$row['user_id'].'" data-tousername="'.$row['username'].'">bắt đầu chat</button></td>
-	</tr>
-	';
+	elseif($row['statusUser'] == 1){			
+		$status = '<span style="height:30px; width:60px; " class="w-100 label label-success">Active Now</span>';	
+
+		
+	}
+	$output .= '
+	<div style="height:40px " class = "d-flex justify-content-around align-items-center mb-2">
+			<p style = "width:200px ;font-size: 25px; font-weight: 200px" class= "m-0 p-0"> '.$row['nameUser'].'</p>
+			<div style="width:60px; height:30px; ">'.$status.'</div>
+			<div><button type="button" class="btn btn-info btn-xs start_chat" data-touserid="'.$row['idUser'].'" data-tousername="'.$row['nameUser'].'">Trò Chuyện</button></div>
+	</div>';
 }
 
-$output .= '</table>';
+$output .= '</div>';
 
 echo $output;
 

@@ -54,7 +54,7 @@
             $_SESSION["idUser"]= $idUser;
             $_SESSION["nameUser"]= $nameUser;
 
-            $sql = "INSERT INTO loginhistory (idUser, nameUser , statusUser) VALUES ('$idUser','$nameUser','1') ";
+            $sql = "UPDATE inforuser SET statusUser = '1' WHERE idUser = '$idUser'  ";
             $conn->exec($sql);
 
             header("location: appChat.php");

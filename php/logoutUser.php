@@ -1,12 +1,14 @@
 <?php
     require_once ("connectDB.php");
     session_start();
+    $idUser = $_SESSION['idUser'];
+    $sql = "UPDATE inforuser SET statusUser = '0' WHERE idUser = $idUser ";
+    $conn->exec($sql);
+
 
     session_unset();
     session_destroy();
 
-    $sql = "UPDATE loginhistory SET statusUser = '0' ";
-    $conn->exec($sql);
 
     header("location: loginUser.php");
     exit;   

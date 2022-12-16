@@ -1,5 +1,5 @@
 .w-400{
-    width: 400px;
+    width: 500px;
 }
 
 .size-40{
@@ -9,4 +9,9 @@
 
 .list-group-item>a {
     text-decoration: none;
+}
+
+p {
+    margin-top: 0px;    
+    margin-bottom: 0px;
 }
