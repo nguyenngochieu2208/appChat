@@ -37,16 +37,16 @@
 
              
              <a class="btn btn-dark text-decoration-none" href="logoutUser.php">Log Out</a>
-         </div>
+         </div> 
 
          <div class="rowUser">
              <div class="w-100" id="user_details"></div>
-             <div id="user_model_details"></div>
+             
          </div>
          <br />
          <br />
      </div>
-
+    <div id="user_model_details"></div>
 
  </body>
 

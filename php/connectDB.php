@@ -13,7 +13,7 @@ try {
 
 function get_user_name($idUser, $conn)
 	{
-		$query = "SELECT nameUser FROM loginhistory WHERE idUser = '$idUser'";
+		$query = "SELECT nameUser FROM inforuser WHERE idUser = '$idUser'";
 		$statement = $conn->prepare($query);
 		$statement->execute();
 		$result = $statement->fetchAll();
@@ -49,14 +49,14 @@ function print_chat_history($from_idUser, $to_idUser, $conn){
 				$nameUser = '<b class="text-success">Bạn</b>';
 				$background_mess = 'background-color:#ffe6e6;';
 		
-				$mess = '<div class="d-flex justify-content-between m-0 p-0">
+				$mess = '<div class="d-flex justify-content-between m-0 p-0" style= "">
 						<p style= "margin:0; padding: 0;" align= "right">
 							<span style="cursor: pointer; font-size: 25px; magin: 0; padding: 0;">&times;</span>
 						</p>
 						<p >'.$nameUser.'</p>
 					</div>
 					 
-					<p align="right" style= "font-size: 20px; qmargin: 0 5px;"> </br> '.$message.'</p>
+					<p align="right" style= "font-size: 20px; margin: 0 5px; "> </br> '.$message.'</p>
 
 					<div>
 						<small><em>'.$rows['timeMessage'].'</em></small>
@@ -71,7 +71,7 @@ function print_chat_history($from_idUser, $to_idUser, $conn){
 				$nameUser = '<b class="text-danger">'.get_user_name($rows['from_idUser'], $conn).'</b>';
 				$background_mess= 'background-color: #dcdcdc;';
 
-				$mess = '<div class="d-flex justify-content-between m-0 p-0">
+				$mess = '<div class="d-flex justify-content-between m-0 p-0" style= "">
 					<p style="text-align-center">'.$nameUser.' </p>
 					<p style= "margin:0; padding: 0;" align= "right">
 						<span style="cursor: pointer; font-size: 25px; magin: 0; padding: 0;">&times;</span>
