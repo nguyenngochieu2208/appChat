@@ -95,14 +95,14 @@ $(document).ready(function() {
         modal_content += '<div class="form-group">';
         modal_content += '<textarea name="message" id="message_' + to_idUser +
             '" class="form-control message"></textarea>';
-        modal_content += '</div><div class="form-group" align="right">';
-        // modal_content += '<div class="image_upload">'
-        // modal_content +=
-        //     '<form id="uploadImage" method="post" action="function/uploadIMG.php" enctype="multipart/form-data">'
-        // modal_content += '<label for="uploadFile"><img style="height: 14px; width: 14px;" src="../assets/imgs/upload.png" /></label>'
-        // modal_content += '<input type="file" name="uploadFile" id="uploadFile"/>'
-        // modal_content += '</form>'
-        // modal_content += '</div>'
+        modal_content += '</div><div class="form-group d-flex justify-content-between" align="right">';
+        modal_content += '<div class="image_upload">'
+        modal_content +=
+            '<form id="uploadImage" method="post" action="function/uploadIMG.php" enctype="multipart/form-data">'
+        modal_content += '<label for="uploadFile"><img style="height: 30px; width: 30px;" src="../assets/imgs/upload.png" /></label>'
+        modal_content += '<input type="file" name="uploadFile" id="uploadFile" accept = ".jpg, .png"  />'
+        modal_content += '</form>'
+        modal_content += '</div>'  
         modal_content += '<button type="button" name="send_chat" idUser="' + to_idUser +
             '" class="btn btn-info send_chat">Gửi</button></div></div>';
         $('#user_model_details').html(modal_content);
@@ -179,6 +179,29 @@ $(document).ready(function() {
             console.log(to_idUser);
         });
     }
+
+    $(document).on('click', '.remove_Mess', function(){
+			var idMessage = $(this).attr('id');
+			if(confirm("Bạn chắc chắc muốn thu hồi tin nhắn này?"))
+			{
+				$.ajax({
+					url:"function/deleteMessage.php",
+					method:"POST",
+					data:{idMessage: idMessage},
+					success:function(data)
+					{
+						update_chat_history_data();
+					}
+				})
+			}
+		});
+
+    $(document).on('change', function(){
+        $('#uploadImage').ajaxSubmit({
+            target: ".chat_history",
+            resetForm: true,
+        });
+    });
 
 });
  </script>

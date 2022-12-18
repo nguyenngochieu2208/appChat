@@ -10,13 +10,14 @@ $data = array(
 	':to_idUser'		=>	$_POST['to_idUser'],
 	':from_idUser'		=>	$_SESSION["idUser"],
 	':message'		=>	$_POST['message'],
+	':dltMessage'	=> '0',
 );
 
 
 $query = "
 INSERT INTO chatmessage 
-(to_idUser, from_idUser, message) 
-VALUES (:to_idUser, :from_idUser, :message)
+(to_idUser, from_idUser, message, dltMessage) 
+VALUES (:to_idUser, :from_idUser, :message, :dltMessage)
 ";
 
 $statement = $conn->prepare($query);

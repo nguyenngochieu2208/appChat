@@ -44,17 +44,32 @@ function print_chat_history($from_idUser, $to_idUser, $conn){
 			$mess = null;
 			if($rows["from_idUser"] == $from_idUser)
 			{
+				if( $rows['dltMessage'] == 1 )
+				{
+					$message = '<p align="right" style= "font-size: 20px; margin: 0 5px;"> Tin nhắn này đã thu hồi! </p>';
+
+					$nameUser = '<b class="text-success">Bạn</b>';
+
+
+
+					
+				}
+				else{
+					$message = $rows['message'];
+
+					$nameUser = '<div class="d-flex justify-content-between m-0 p-0">
+					<button type= "button" style = " color: red; font-weight: bold; " class = "btn remove_Mess" id = "'.$rows['idMessage'].'">X</button>&nbsp;
+					<b class="text-success">Bạn</b>
+					</div>';
+					
+				}
 				
-				$message = $rows['message'];
-				$nameUser = '<b class="text-success">Bạn</b>';
+				
 				$background_mess = 'background-color:#ffe6e6;';
 		
-				$mess = '<div class="d-flex justify-content-between m-0 p-0" style= "">
-						<p style= "margin:0; padding: 0;" align= "right">
-							<span style="cursor: pointer; font-size: 25px; magin: 0; padding: 0;">&times;</span>
-						</p>
+				$mess = '
 						<p >'.$nameUser.'</p>
-					</div>
+					
 					 
 					<p align="right" style= "font-size: 20px; margin: 0 5px; "> </br> '.$message.'</p>
 
@@ -67,15 +82,19 @@ function print_chat_history($from_idUser, $to_idUser, $conn){
 			}
 			else
 			{
-				$message = $rows["message"];
+				if( $rows['dltMessage'] == 1 )
+				{
+					$message = '<p style= "font-size: 20px; margin: 0 5px;"> Tin nhắn này đã thu hồi! </p>';
+				}
+				else{
+					$message = $rows['message'];
+				}
+
 				$nameUser = '<b class="text-danger">'.get_user_name($rows['from_idUser'], $conn).'</b>';
 				$background_mess= 'background-color: #dcdcdc;';
 
 				$mess = '<div class="d-flex justify-content-between m-0 p-0" style= "">
 					<p style="text-align-center">'.$nameUser.' </p>
-					<p style= "margin:0; padding: 0;" align= "right">
-						<span style="cursor: pointer; font-size: 25px; magin: 0; padding: 0;">&times;</span>
-					</p>
 				</div>
 
 				<p style= "font-size: 20px; margin: 0 5px;"></br> '.$message.'</p>
@@ -84,6 +103,8 @@ function print_chat_history($from_idUser, $to_idUser, $conn){
 					<small><em>'.$rows['timeMessage'].'</em></small>
 				</div>
 				';
+
+			
 			}
 			$output .= '
 			<li type= "button" style="padding:4px ; border:1px solid #ccc; border-radius: 10px; margin-bottom:10px;  '.$background_mess.'">
