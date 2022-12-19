@@ -62,7 +62,7 @@ $(document).ready(function() {
         update_chat_history_data();
     }, 1000);
 
-    // lấy dữ liệu user
+  
     function getUser() {
         $.ajax({
             url: "function/getUser.php",
@@ -74,16 +74,6 @@ $(document).ready(function() {
     }
 
 
-    // cập nhật trạng thái ng dùng
-    // function update_last_activity() {
-    //     $.ajax({
-    //         url: "function/update_last_activity.php",
-    //         success: function() {}
-    //     })
-    // }
-
-
-    // tạo hộp nhắn tin
     function make_chat_dialog_box(to_idUser, to_nameUser) {
         var modal_content = '<div style ="font-weight: 150px; color: #0000FF" id="user_dialog_' + to_idUser +
             '" class="user_dialog" title="' + to_nameUser + '">';
@@ -109,7 +99,7 @@ $(document).ready(function() {
     }
 
 
-    // sự kiện nhấn vào bắt đầu trò chuyện 
+ 
     $(document).on('click', '.start_chat', function() {
         var to_idUser = $(this).data('touserid');
         var to_nameUser = $(this).data('tousername');
@@ -127,8 +117,6 @@ $(document).ready(function() {
     });
 
 
-
-    //bat su kien gui tin nhan
     $(document).on('click', '.send_chat', function() {
         var to_idUser = $(this).attr('idUser');
         var message = $.trim($('#message_' + to_idUser).val());
@@ -160,17 +148,6 @@ $(document).ready(function() {
             }
         })
     }
-
-    // function update_chat_history_data()
-    // 	{
-    // 		$('.chat_history').each(function(){
-    // 			var to_idUser = $(this).data('touserid');
-    //             console.log(to_idUser);
-    // 			print_chat_history(to_idUser);
-
-    // 		});
-    // 	}
-
 
     function update_chat_history_data() {
         $('.chat_history').each(function() {
@@ -204,4 +181,5 @@ $(document).ready(function() {
     });
 
 });
+
  </script>

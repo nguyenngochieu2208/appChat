@@ -25,20 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     if ($size_file > 5242880) {
         $error['uploadFile'] = "File bạn chọn không được quá 5MB";
     }
-// Kiểm tra file đã tồn tại trê hệ thống
-    // if (file_exists($target_file)) {
-    //     $error['uploadFile'] = "File bạn chọn đã tồn tại trên hệ thống";
-    // }
-//
+
     if (empty($error)) {
         if (move_uploaded_file($_FILES["uploadFile"]["tmp_name"], $target_file)) {
 
            echo '<p><img src="'.$target_file.'" class="img-thumbnail" width="200" height="160" /></p><br />';
             
             
-
-       }else{
-            // echo "k thành công";
 
        }
    }
