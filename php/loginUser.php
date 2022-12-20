@@ -42,7 +42,7 @@
 
         if($kq == false){
             echo '<script type ="text/JavaScript">';  
-            echo 'alert("THÔNG TIN ĐĂNG NHẬP SAI")';  
+            echo 'alert("THÔNG TIN ĐĂNG NHẬP SAI")';        
             echo '</script>';  
         }
 

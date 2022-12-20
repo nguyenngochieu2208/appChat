@@ -27,7 +27,7 @@ p {
 		border-radius: 3px;
 	}
 
-	#group_chat_message
+#group_chat_message
 	{
 		width: 100%;
 		height: auto;
@@ -36,18 +36,18 @@ p {
 		padding:6px 24px 6px 12px;
 	}
 
-	.image_uploads
+.image_upload
 	{
 		position: absolute;
 		top:3px;
 		right:3px;
 	}
-	.image_upload > form > input
+.image_upload > form > input
 	{
 		display: none;
 	}
 
-	.image_upload img
+.image_upload img
 	{
 		width: 24px;
 		cursor: pointer;

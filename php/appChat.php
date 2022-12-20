@@ -1,4 +1,5 @@
  <?php require_once "connectDB.php" ;
+ 
     session_start();
     $nameUser = $_SESSION['nameUser'];  
  ?>
@@ -35,6 +36,11 @@
                  <?php echo "<p style = \" font-size: 20px \" class= \" ms-4 pt-3\">".$nameUser."</p>" ?>
              </div>
 
+             <div>
+             <input type="hidden" id="is_active_group_chat_window" value="no" />
+				<button type="button" name="group_chat" id="group_chat" class="btn btn-success btn-xs">Nhóm Chat</button>  
+             </div>
+
              
              <a class="btn btn-dark text-decoration-none" href="logoutUser.php">Log Out</a>
          </div> 
@@ -46,11 +52,33 @@
          <br />
          <br />
      </div>
-    <div id="user_model_details"></div>
+    <div id="user_model_details"></div> 
 
  </body>
 
  </html>
+
+ <div id="group_chat_dialog" title="Nhóm Chat Chung">
+			<div id="group_chat_history" style="height:500px; border:1px solid #ccc; overflow-y: scroll; margin-bottom:24px; padding:16px;">
+			</div>
+			<div class="form-group">
+				<div class="chat_message_area">
+					<div id="group_chat_message" contenteditable class="form-control">
+
+                    </div>
+					<div class="image_upload">
+						<form id="uploadImage" method="post" action="uploadIMG.php" enctype="multipart/form-data">
+							<label for="uploadFile"><img src="../assets/imgs/upload.png" /></label>
+							<input type="file" name="uploadFile" id="uploadFile" />
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" align ="right">
+				<button type="button" name="send_group_chat" id="send_group_chat" class="btn btn-info">Send</button>
+			</div>
+		</div>
+
 
  <script>
 
@@ -60,9 +88,10 @@ $(document).ready(function() {
     setInterval(function() {
         getUser();
         update_chat_history_data();
+        fetch_group_chat_history()
     }, 1000);
 
-    // lấy dữ liệu user
+
     function getUser() {
         $.ajax({
             url: "function/getUser.php",
@@ -72,15 +101,6 @@ $(document).ready(function() {
             }
         })
     }
-
-
-    // cập nhật trạng thái ng dùng
-    // function update_last_activity() {
-    //     $.ajax({
-    //         url: "function/update_last_activity.php",
-    //         success: function() {}
-    //     })
-    // }
 
 
     // tạo hộp nhắn tin
@@ -96,20 +116,19 @@ $(document).ready(function() {
         modal_content += '<textarea name="message" id="message_' + to_idUser +
             '" class="form-control message"></textarea>';
         modal_content += '</div><div class="form-group d-flex justify-content-between" align="right">';
-        modal_content += '<div class="image_upload">'
-        modal_content +=
-            '<form id="uploadImage" method="post" action="function/uploadIMG.php" enctype="multipart/form-data">'
-        modal_content += '<label for="uploadFile"><img style="height: 30px; width: 30px;" src="../assets/imgs/upload.png" /></label>'
-        modal_content += '<input type="file" name="uploadFile" id="uploadFile" accept = ".jpg, .png"  />'
-        modal_content += '</form>'
-        modal_content += '</div>'  
+        // modal_content += '<div class="image_upload">'
+        // modal_content +=
+        //     '<form id="uploadImage" method="post" action="function/uploadIMG.php" enctype="multipart/form-data">'
+        // modal_content += '<label for="uploadFile"><img style="height: 30px; width: 30px;" src="../assets/imgs/upload.png" /></label>'
+        // modal_content += '<input type="file" name="uploadFile" id="uploadFile" accept = ".jpg, .png"  />'
+        // modal_content += '</form>'
+        // modal_content += '</div>'  
         modal_content += '<button type="button" name="send_chat" idUser="' + to_idUser +
             '" class="btn btn-info send_chat">Gửi</button></div></div>';
         $('#user_model_details').html(modal_content);
     }
 
 
-    // sự kiện nhấn vào bắt đầu trò chuyện 
     $(document).on('click', '.start_chat', function() {
         var to_idUser = $(this).data('touserid');
         var to_nameUser = $(this).data('tousername');
@@ -126,13 +145,11 @@ $(document).ready(function() {
         print_chat_history(to_idUser);
     });
 
-
-
-    //bat su kien gui tin nhan
     $(document).on('click', '.send_chat', function() {
         var to_idUser = $(this).attr('idUser');
         var message = $.trim($('#message_' + to_idUser).val());
-        $.ajax({
+        if(message != ''){
+            $.ajax({
             url: "function/insertChat.php",
             method: "POST",
             data: {
@@ -144,7 +161,11 @@ $(document).ready(function() {
                 element[0].emojioneArea.setText('');
                 $('#chat_history_' + to_idUser).html(data);
             }
-        })
+            })
+        }
+        else{
+            alert('Bạn chưa viết tin nhắn!');
+        }
     });
 
     //print_message_realtime
@@ -160,16 +181,6 @@ $(document).ready(function() {
             }
         })
     }
-
-    // function update_chat_history_data()
-    // 	{
-    // 		$('.chat_history').each(function(){
-    // 			var to_idUser = $(this).data('touserid');
-    //             console.log(to_idUser);
-    // 			print_chat_history(to_idUser);
-
-    // 		});
-    // 	}
 
 
     function update_chat_history_data() {
@@ -196,10 +207,61 @@ $(document).ready(function() {
 			}
 		});
 
-    $(document).on('change', function(){
+        $('#group_chat_dialog').dialog({
+			autoOpen:false,
+			width:400
+		});
+
+		$('#group_chat').click(function(){
+			$('#group_chat_dialog').dialog('open');
+			$('#is_active_group_chat_window').val('yes');
+			fetch_group_chat_history();
+		});
+
+		$('#send_group_chat').click(function(){
+			var message = $('#group_chat_message').html();
+			var action = 'insert_data';
+			if(message != '')
+			{
+				$.ajax({
+					url:"function/group_chat.php",
+					method:"POST",
+					data:{message:message, action:action},
+					success:function(data){
+						$('#group_chat_message').html('');
+						$('#group_chat_history').html(data);
+					}
+				})
+			}
+			else
+			{
+				alert('Bạn chưa viết tin nhắn!');
+			}
+
+		});
+
+		function fetch_group_chat_history()
+		{
+			var group_chat_dialog_active = $('#is_active_group_chat_window').val();
+			var action = "fetch_data";
+			if(group_chat_dialog_active == 'yes')
+			{
+				$.ajax({
+					url:"function/group_chat.php",
+					method:"POST",
+					data:{action:action},
+					success:function(data)
+					{
+						$('#group_chat_history').html(data);
+					}
+				})
+			}
+		}
+
+    $('#uploadFile').on('change', function(){
         $('#uploadImage').ajaxSubmit({
-            target: ".chat_history",
-            resetForm: true,
+            target: "#group_chat_message",
+            resetForm: true
         });
     });
 
