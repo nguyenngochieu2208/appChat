@@ -49,9 +49,6 @@ function print_chat_history($from_idUser, $to_idUser, $conn){
 					$message = '<p align="right" style= "font-size: 20px; margin: 0 5px;"> Tin nhắn này đã thu hồi! </p>';
 
 					$nameUser = '<b class="text-success">Bạn</b>';
-
-
-
 					
 				}
 				else{
@@ -116,6 +113,7 @@ function print_chat_history($from_idUser, $to_idUser, $conn){
 		return $output;
 }
 
+<<<<<<< HEAD
 function fetch_group_chat_history($conn)
 	{
 		$query = "
@@ -137,15 +135,45 @@ function fetch_group_chat_history($conn)
 			$message = '';
 			$mess = null;
 			if($rows["from_idUser"] == $_SESSION['idUser'])
+=======
+
+// thực hiện chat nhóm
+function fetch_group_chat_history($conn)
+{
+	$query = "
+	SELECT * FROM chatmessage 
+	WHERE to_idUser = '0'  
+	ORDER BY timeMessage DESC
+	";
+
+	$statement = $conn->prepare($query);
+
+	$statement->execute();
+
+	$result = $statement->fetchAll();
+
+
+// thực hiện xóa tin nhắn nhóm
+	$output = '<ul class="list-unstyled">';
+	foreach($result as $rows)
+	{
+		$nameUser = '';
+		$background_mess = '';
+		$message = '';
+		if($rows["from_idUser"] == $_SESSION['idUser'])
+>>>>>>> c89014d2b72ce5079157d037127424c8987b6d7d
 			{
 				if( $rows['dltMessage'] == 1 )
 				{
 					$message = '<p align="right" style= "font-size: 20px; margin: 0 5px;"> Tin nhắn này đã thu hồi! </p>';
 
 					$nameUser = '<b class="text-success">Bạn</b>';
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> c89014d2b72ce5079157d037127424c8987b6d7d
 					
 				}
 				else{
@@ -205,9 +233,15 @@ function fetch_group_chat_history($conn)
 			'.$mess.'
 			</li>
 			';
+<<<<<<< HEAD
 		}
 		$output .= '</ul>';
 		return $output;
+=======
+	}
+	$output .= '</ul>';
+	return $output;
+>>>>>>> c89014d2b72ce5079157d037127424c8987b6d7d
 }
 
 ?>

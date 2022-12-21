@@ -115,6 +115,7 @@ $(document).ready(function() {
     //     fetch_group_chat_history();
     // }, 3000);
 
+<<<<<<< HEAD
     // function getUser() {
     //     $.ajax({
     //         url: "function/getUser.php",
@@ -127,6 +128,20 @@ $(document).ready(function() {
 
 
     // tạo hộp nhắn tin
+=======
+  
+    function getUser() {
+        $.ajax({
+            url: "function/getUser.php",
+            method: "POST",
+            success: function(data) {
+                $('#user_details').html(data);
+            }
+        })
+    }
+
+
+>>>>>>> c89014d2b72ce5079157d037127424c8987b6d7d
     function make_chat_dialog_box(to_idUser, to_nameUser) {
         var modal_content = '<div style ="font-weight: 150px; color: #0000FF" id="user_dialog_' + to_idUser +
             '" class="user_dialog" title="' + to_nameUser + '">';
@@ -152,6 +167,10 @@ $(document).ready(function() {
     }
 
 
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> c89014d2b72ce5079157d037127424c8987b6d7d
     $(document).on('click', '.start_chat', function() {
         var to_idUser = $(this).data('touserid');
         var to_nameUser = $(this).data('tousername');
@@ -168,6 +187,10 @@ $(document).ready(function() {
         print_chat_history(to_idUser);
     });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c89014d2b72ce5079157d037127424c8987b6d7d
     $(document).on('click', '.send_chat', function() {
         var to_idUser = $(this).attr('idUser');
         var message = $.trim($('#message_' + to_idUser).val());
@@ -205,7 +228,10 @@ $(document).ready(function() {
         })
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c89014d2b72ce5079157d037127424c8987b6d7d
     function update_chat_history_data() {
         $('.chat_history').each(function() {
             var to_idUser = $(this).data('touserid');
@@ -289,4 +315,5 @@ $(document).ready(function() {
     });
 
 });
+
  </script>
