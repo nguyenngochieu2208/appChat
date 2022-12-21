@@ -7,7 +7,7 @@ if(!empty($_FILES)){
         if(move_uploaded_file($_source_path, $target_path)){
             echo '
             <p>
-                <img src = "'.$target_path.'" class = "img_thumbnail" width = "250" height ="200" />
+                <img src = "'.$target_path.'" class = "img" style = "width: 100%" />
             </p></br>
             ';
         }

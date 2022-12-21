@@ -16,12 +16,35 @@
      <link rel="stylesheet" href="../css/appChat.css">
      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
+     <link rel="stylesheet" href="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.css">
      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
      <script src="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
-     <link rel="stylesheet" href="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.css">
+     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+
+    <script>
+
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('91d83c94dd13f066342b', {
+      cluster: 'ap1'
+    });
+
+    var channel = pusher.subscribe('My-Chat');
+    channel.bind('get-user', function(data) {
+            $.ajax({
+            url: "function/getUser.php",    
+            method: "POST",
+            success: function(data) {
+                $('#user_details').html(data);
+            }
+    })
+    });
+
+    </script>
+
+    
  </head>
 
  <body class="d-flex justify-content-center align-items-center vh-100">
@@ -52,6 +75,7 @@
          <br />
          <br />
      </div>
+
     <div id="user_model_details"></div> 
 
  </body>
@@ -63,7 +87,7 @@
 			</div>
 			<div class="form-group">
 				<div class="chat_message_area">
-					<div id="group_chat_message" contenteditable class="form-control">
+					<div data-nameUser="<?php echo $nameUser ?>" id="group_chat_message" contenteditable class="form-control">
 
                     </div>
 					<div class="image_upload">
@@ -85,22 +109,21 @@
 $(document).ready(function() {
 
     getUser();
-    setInterval(function() {
-        getUser();
-        update_chat_history_data();
-        fetch_group_chat_history()
-    }, 1000);
+    // setInterval(function() {
+    //     getUser();
+    //     update_chat_history_data();
+    //     fetch_group_chat_history();
+    // }, 3000);
 
-
-    function getUser() {
-        $.ajax({
-            url: "function/getUser.php",
-            method: "POST",
-            success: function(data) {
-                $('#user_details').html(data);
-            }
-        })
-    }
+    // function getUser() {
+    //     $.ajax({
+    //         url: "function/getUser.php",
+    //         method: "POST",
+    //         success: function(data) {
+    //             $('#user_details').html(data);
+    //         }
+    //     })
+    // }
 
 
     // tạo hộp nhắn tin
@@ -156,7 +179,7 @@ $(document).ready(function() {
                 to_idUser: to_idUser,
                 message: message,
             },
-            success: function(data) {
+            success: function(data){
                 var element = $('#message_' + to_idUser).emojioneArea();
                 element[0].emojioneArea.setText('');
                 $('#chat_history_' + to_idUser).html(data);

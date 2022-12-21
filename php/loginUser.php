@@ -9,6 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/login.css">
+
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 </head>
 
 <body>
@@ -56,6 +58,31 @@
 
             $sql = "UPDATE inforuser SET statusUser = '1' WHERE idUser = '$idUser'  ";
             $conn->exec($sql);
+
+            require __DIR__ . '/vendor/autoload.php';
+            $options = array(
+                'cluster' => 'ap1',
+                'useTLS' => true 
+            );
+
+            $pusher = new Pusher\Pusher(
+                'f9177b2d4da017341be8',
+                '7cac507f7812892c8fe5',
+                '1527995',
+                $options
+            );
+
+            $sql = "SELECT statusUser FROM inforuser WHERE idUser = '$idUser'";
+            if($conn->query($sql) === true){
+                $data['idUser'] = $idUser;
+                $data['nameUser'] = $nameUser;
+                $pusher->trigger('My-Chat', 'getUser', $data);
+            }
+            else{
+                echo "Connect DataBase Fail !!!";
+            }
+    
+           
 
             header("location: appChat.php");
         }
