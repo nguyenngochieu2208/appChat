@@ -23,9 +23,6 @@
     }
 
 
-    // $sql = "SELECT * FROM inforuser";
-    // $data = $conn->query($sql);
-    // $rows = $data->fetchAll();
 
     
 

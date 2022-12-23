@@ -17,32 +17,14 @@
      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
      <link rel="stylesheet" href="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.css">
+    
      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
      <script src="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
-     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-
-    <script>
-
-    Pusher.logToConsole = true;
-
-    var pusher = new Pusher('91d83c94dd13f066342b', {
-      cluster: 'ap1'
-    });
-
-    var channel = pusher.subscribe('My-Chat');
-    channel.bind('get-user', function(data) {
-            $.ajax({
-            url: "function/getUser.php",    
-            method: "POST",
-            success: function(data) {
-                $('#user_details').html(data);
-            }
-    })
-    });
-
-    </script>
+     
+    
+     
 
     
  </head>
@@ -77,6 +59,37 @@
      </div>
 
     <div id="user_model_details"></div> 
+
+
+
+
+
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script>
+
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('91d83c94dd13f066342b', {
+        cluster: 'ap1'
+        });
+
+
+        var channel = pusher.subscribe('My-Chat');  
+        channel.bind('getU', function(data) {
+                $.ajax({
+                    url: "function/getUser.php",    
+                    method: "POST",
+                    data: {
+                        nameUser: nameUser,
+                        statusUser : statusUser
+                    },
+                    success: function(result) {
+                        $('#user_details').html(result);
+                    }
+                })
+        });
+
+    </script>
 
  </body>
 
@@ -115,7 +128,6 @@ $(document).ready(function() {
     //     fetch_group_chat_history();
     // }, 3000);
 
-<<<<<<< HEAD
     // function getUser() {
     //     $.ajax({
     //         url: "function/getUser.php",
@@ -128,20 +140,6 @@ $(document).ready(function() {
 
 
     // tạo hộp nhắn tin
-=======
-  
-    function getUser() {
-        $.ajax({
-            url: "function/getUser.php",
-            method: "POST",
-            success: function(data) {
-                $('#user_details').html(data);
-            }
-        })
-    }
-
-
->>>>>>> c89014d2b72ce5079157d037127424c8987b6d7d
     function make_chat_dialog_box(to_idUser, to_nameUser) {
         var modal_content = '<div style ="font-weight: 150px; color: #0000FF" id="user_dialog_' + to_idUser +
             '" class="user_dialog" title="' + to_nameUser + '">';
@@ -167,10 +165,6 @@ $(document).ready(function() {
     }
 
 
-<<<<<<< HEAD
-=======
- 
->>>>>>> c89014d2b72ce5079157d037127424c8987b6d7d
     $(document).on('click', '.start_chat', function() {
         var to_idUser = $(this).data('touserid');
         var to_nameUser = $(this).data('tousername');
@@ -187,10 +181,6 @@ $(document).ready(function() {
         print_chat_history(to_idUser);
     });
 
-<<<<<<< HEAD
-=======
-
->>>>>>> c89014d2b72ce5079157d037127424c8987b6d7d
     $(document).on('click', '.send_chat', function() {
         var to_idUser = $(this).attr('idUser');
         var message = $.trim($('#message_' + to_idUser).val());
@@ -228,10 +218,6 @@ $(document).ready(function() {
         })
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> c89014d2b72ce5079157d037127424c8987b6d7d
     function update_chat_history_data() {
         $('.chat_history').each(function() {
             var to_idUser = $(this).data('touserid');

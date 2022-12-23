@@ -18,8 +18,7 @@
     <?php require_once "connectDB.php";
         session_start();
      ?>
-
-
+     
     <?php 
 
     $gmailphoneUser = null;
@@ -31,15 +30,13 @@
         $gmailphoneUser = $_POST['gmailphoneUser'] ;
         $pass = $_POST['passUser'];
         $passUser = md5($pass);
-
     }
 
-    
 
     if($gmailphoneUser != null  && $passUser != null){
         $sql = "SELECT * FROM inforuser WHERE gmailUser = '$gmailphoneUser' OR phoneUser = '$gmailphoneUser' AND passUser = '$passUser' ";
-        $data = $conn->query($sql);
-        $kq = $data->fetch();
+        $dat = $conn->query($sql);
+        $kq = $dat->fetch();
         
 
         if($kq == false){
@@ -62,29 +59,40 @@
             require __DIR__ . '/vendor/autoload.php';
             $options = array(
                 'cluster' => 'ap1',
-                'useTLS' => true 
-            );
+                'useTLS' => true
+              );        
 
-            $pusher = new Pusher\Pusher(
-                'f9177b2d4da017341be8',
-                '7cac507f7812892c8fe5',
-                '1527995',
+              $pusher = new Pusher\Pusher(
+                '91d83c94dd13f066342b',
+                'bf842673ecfc72c666d8',
+                '1527701',
                 $options
-            );
+              );        
 
-            $sql = "SELECT statusUser FROM inforuser WHERE idUser = '$idUser'";
-            if($conn->query($sql) === true){
-                $data['idUser'] = $idUser;
-                $data['nameUser'] = $nameUser;
-                $pusher->trigger('My-Chat', 'getUser', $data);
-            }
-            else{
-                echo "Connect DataBase Fail !!!";
-            }
-    
-           
+            $sql = "SELECT statusUser FROM inforuser WHERE idUser = $idUser";
+            $dat2 = $conn->query($sql);
+            $kqs = $dat2->fetch();  
+            $statusUser = $kqs['statusUser'];    
+            
+            // array(   
+            //     'nameUser' => $nameUser,
+            //     'statusUser' => $statusUser
+            // ); 
+            $gmailUser = $_POST['gmailphoneUser'];
+            if($dat2 != false){ 
+                $data['message'] = $gmailUser;
 
-            header("location: appChat.php");
+                $pusher->trigger('My-Chat', 'getU', $data);
+                print_r($data); 
+
+
+                
+                // header("location: appChat.php");
+              
+            }
+            else{   
+                echo "Connect DataBase Fail";       
+            }      
         }
         
     }
