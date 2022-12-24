@@ -57,39 +57,39 @@
             $conn->exec($sql);
 
             require __DIR__ . '/vendor/autoload.php';
-            $options = array(
+            require 'Pusher.php';
+
+            
+            $options = array(   
                 'cluster' => 'ap1',
                 'useTLS' => true
               );        
 
               $pusher = new Pusher\Pusher(
-                '91d83c94dd13f066342b',
-                'bf842673ecfc72c666d8',
-                '1527701',
+                '504e1e3617aac7eed5cc',
+                '348cb23446fa7cf39c46',
+                '1529322',
                 $options
-              );        
+              );
 
             $sql = "SELECT statusUser FROM inforuser WHERE idUser = $idUser";
             $dat2 = $conn->query($sql);
             $kqs = $dat2->fetch();  
             $statusUser = $kqs['statusUser'];    
             
-            // array(   
-            //     'nameUser' => $nameUser,
-            //     'statusUser' => $statusUser
-            // ); 
             $gmailUser = $_POST['gmailphoneUser'];
             if($dat2 != false){ 
-                $data['message'] = $gmailUser;
+                $data['message'] = array(
+                    'nameUser' => $nameUser,
+                    'statusUser' => $statusUser
+                );                  
 
-                $pusher->trigger('My-Chat', 'getU', $data);
-                print_r($data); 
+                $pusher->trigger('Chat', 'getStatus', $data);
 
 
-                
-                // header("location: appChat.php");
+                header("location: appChat.php");
               
-            }
+            }   
             else{   
                 echo "Connect DataBase Fail";       
             }      

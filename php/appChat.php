@@ -17,16 +17,16 @@
      <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
      <link rel="stylesheet" href="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.css">
-    
+     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
      <script src="https://cdn.rawgit.com/mervick/emojionearea/master/dist/emojionearea.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
-     
-    
-     
 
-    
+
+
+
+
  </head>
 
  <body class="d-flex justify-content-center align-items-center vh-100">
@@ -36,90 +36,89 @@
      <div class="container bg-light w-400 shadow">
          <div class="w-100 d-flex justify-content-between align-items-center" style="border-bottom: 2px solid black;">
 
-             <div class="d-flex justify-content-center align-items-center " >    
+             <div class="d-flex justify-content-center align-items-center ">
                  <img style="width: 40px; height: 40px" class="" src="../assets/imgs/avatardf2.png" alt="">
                  <?php echo "<p style = \" font-size: 20px \" class= \" ms-4 pt-3\">".$nameUser."</p>" ?>
              </div>
 
              <div>
-             <input type="hidden" id="is_active_group_chat_window" value="no" />
-				<button type="button" name="group_chat" id="group_chat" class="btn btn-success btn-xs">Nhóm Chat</button>  
+                 <input type="hidden" id="is_active_group_chat_window" value="no" />
+                 <button type="button" name="group_chat" id="group_chat" class="btn btn-success btn-xs">Nhóm
+                     Chat</button>
              </div>
 
-             
+
              <a class="btn btn-dark text-decoration-none" href="logoutUser.php">Log Out</a>
-         </div> 
+         </div>
 
          <div class="rowUser">
-             <div class="w-100" id="user_details"></div>
-             
+             <div class="w-100" id="user_details">
+
+             </div>
          </div>
-         <br />
-         <br />
+
+     </div>
+     <br />
+     <br />
      </div>
 
-    <div id="user_model_details"></div> 
-
-
-
-
-
-    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-    <script>
-
-        Pusher.logToConsole = true;
-
-        var pusher = new Pusher('91d83c94dd13f066342b', {
-        cluster: 'ap1'
-        });
-
-
-        var channel = pusher.subscribe('My-Chat');  
-        channel.bind('getU', function(data) {
-                $.ajax({
-                    url: "function/getUser.php",    
-                    method: "POST",
-                    data: {
-                        nameUser: nameUser,
-                        statusUser : statusUser
-                    },
-                    success: function(result) {
-                        $('#user_details').html(result);
-                    }
-                })
-        });
-
-    </script>
+     <div id="user_model_details"></div>
 
  </body>
 
  </html>
 
  <div id="group_chat_dialog" title="Nhóm Chat Chung">
-			<div id="group_chat_history" style="height:500px; border:1px solid #ccc; overflow-y: scroll; margin-bottom:24px; padding:16px;">
-			</div>
-			<div class="form-group">
-				<div class="chat_message_area">
-					<div data-nameUser="<?php echo $nameUser ?>" id="group_chat_message" contenteditable class="form-control">
+     <div id="group_chat_history"
+         style="height:500px; border:1px solid #ccc; overflow-y: scroll; margin-bottom:24px; padding:16px;">
+     </div>
+     <div class="form-group">
+         <div class="chat_message_area">
+             <div data-nameUser="<?php echo $nameUser ?>" id="group_chat_message" contenteditable class="form-control">
 
-                    </div>
-					<div class="image_upload">
-						<form id="uploadImage" method="post" action="uploadIMG.php" enctype="multipart/form-data">
-							<label for="uploadFile"><img src="../assets/imgs/upload.png" /></label>
-							<input type="file" name="uploadFile" id="uploadFile" />
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="form-group" align ="right">
-				<button type="button" name="send_group_chat" id="send_group_chat" class="btn btn-info">Send</button>
-			</div>
-		</div>
+             </div>
+             <div class="image_upload">
+                 <form id="uploadImage" method="post" action="uploadIMG.php" enctype="multipart/form-data">
+                     <label for="uploadFile"><img src="../assets/imgs/upload.png" /></label>
+                     <input type="file" name="uploadFile" id="uploadFile" />
+                 </form>
+             </div>
+         </div>
+     </div>
+     <div class="form-group" align="right">
+         <button type="button" name="send_group_chat" id="send_group_chat" class="btn btn-info">Send</button>
+     </div>
+ </div>
 
 
  <script>
-
 $(document).ready(function() {
+
+
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('504e1e3617aac7eed5cc', {
+        cluster: 'ap1'
+    });
+    var channel = pusher.subscribe('Chat');
+
+    channel.bind('getStatus', function(data) {
+        var nameUser = data['message']['nameUser'];
+        var statusUser = data['message']['statusUser'];
+
+        let tr;
+        tr +=
+            '<div style="height:40px " class = "d-flex justify-content-around align-items-center mb-2">';
+        tr += '<p style = "width:200px ;font-size: 25px; font-weight: 200px" class= "m-0 p-0">';
+        tr += nameUser;
+        tr += '</p>';
+        tr += '<div style="width:60px; height:30px; ">';
+        tr += statusUser;
+        tr += '</div>';
+
+        // $('#user_details').append(tr);
+
+    });
 
     getUser();
     // setInterval(function() {
@@ -128,15 +127,15 @@ $(document).ready(function() {
     //     fetch_group_chat_history();
     // }, 3000);
 
-    // function getUser() {
-    //     $.ajax({
-    //         url: "function/getUser.php",
-    //         method: "POST",
-    //         success: function(data) {
-    //             $('#user_details').html(data);
-    //         }
-    //     })
-    // }
+    function getUser() {
+        $.ajax({
+            url: "function/getUser.php",
+            method: "POST",
+            success: function(data) {
+                $('#user_details').html(data);
+            }
+        })
+    }
 
 
     // tạo hộp nhắn tin
@@ -152,13 +151,6 @@ $(document).ready(function() {
         modal_content += '<textarea name="message" id="message_' + to_idUser +
             '" class="form-control message"></textarea>';
         modal_content += '</div><div class="form-group d-flex justify-content-between" align="right">';
-        // modal_content += '<div class="image_upload">'
-        // modal_content +=
-        //     '<form id="uploadImage" method="post" action="function/uploadIMG.php" enctype="multipart/form-data">'
-        // modal_content += '<label for="uploadFile"><img style="height: 30px; width: 30px;" src="../assets/imgs/upload.png" /></label>'
-        // modal_content += '<input type="file" name="uploadFile" id="uploadFile" accept = ".jpg, .png"  />'
-        // modal_content += '</form>'
-        // modal_content += '</div>'  
         modal_content += '<button type="button" name="send_chat" idUser="' + to_idUser +
             '" class="btn btn-info send_chat">Gửi</button></div></div>';
         $('#user_model_details').html(modal_content);
@@ -184,22 +176,21 @@ $(document).ready(function() {
     $(document).on('click', '.send_chat', function() {
         var to_idUser = $(this).attr('idUser');
         var message = $.trim($('#message_' + to_idUser).val());
-        if(message != ''){
+        if (message != '') {
             $.ajax({
-            url: "function/insertChat.php",
-            method: "POST",
-            data: {
-                to_idUser: to_idUser,
-                message: message,
-            },
-            success: function(data){
-                var element = $('#message_' + to_idUser).emojioneArea();
-                element[0].emojioneArea.setText('');
-                $('#chat_history_' + to_idUser).html(data);
-            }
+                url: "function/insertChat.php",
+                method: "POST",
+                data: {
+                    to_idUser: to_idUser,
+                    message: message,
+                },
+                success: function(data) {
+                    var element = $('#message_' + to_idUser).emojioneArea();
+                    element[0].emojioneArea.setText('');
+                    $('#chat_history_' + to_idUser).html(data);
+                }
             })
-        }
-        else{
+        } else {
             alert('Bạn chưa viết tin nhắn!');
         }
     });
@@ -226,80 +217,78 @@ $(document).ready(function() {
         });
     }
 
-    $(document).on('click', '.remove_Mess', function(){
-			var idMessage = $(this).attr('id');
-			if(confirm("Bạn chắc chắc muốn thu hồi tin nhắn này?"))
-			{
-				$.ajax({
-					url:"function/deleteMessage.php",
-					method:"POST",
-					data:{idMessage: idMessage},
-					success:function(data)
-					{
-						update_chat_history_data();
-					}
-				})
-			}
-		});
+    $(document).on('click', '.remove_Mess', function() {
+        var idMessage = $(this).attr('id');
+        if (confirm("Bạn chắc chắc muốn thu hồi tin nhắn này?")) {
+            $.ajax({
+                url: "function/deleteMessage.php",
+                method: "POST",
+                data: {
+                    idMessage: idMessage
+                },
+                success: function(data) {
+                    update_chat_history_data();
+                }
+            })
+        }
+    });
 
-        $('#group_chat_dialog').dialog({
-			autoOpen:false,
-			width:400
-		});
+    $('#group_chat_dialog').dialog({
+        autoOpen: false,
+        width: 400
+    });
 
-		$('#group_chat').click(function(){
-			$('#group_chat_dialog').dialog('open');
-			$('#is_active_group_chat_window').val('yes');
-			fetch_group_chat_history();
-		});
+    $('#group_chat').click(function() {
+        $('#group_chat_dialog').dialog('open');
+        $('#is_active_group_chat_window').val('yes');
+        fetch_group_chat_history();
+    });
 
-		$('#send_group_chat').click(function(){
-			var message = $('#group_chat_message').html();
-			var action = 'insert_data';
-			if(message != '')
-			{
-				$.ajax({
-					url:"function/group_chat.php",
-					method:"POST",
-					data:{message:message, action:action},
-					success:function(data){
-						$('#group_chat_message').html('');
-						$('#group_chat_history').html(data);
-					}
-				})
-			}
-			else
-			{
-				alert('Bạn chưa viết tin nhắn!');
-			}
+    $('#send_group_chat').click(function() {
+        var message = $('#group_chat_message').html();
+        var action = 'insert_data';
+        if (message != '') {
+            $.ajax({
+                url: "function/group_chat.php",
+                method: "POST",
+                data: {
+                    message: message,
+                    action: action
+                },
+                success: function(data) {
+                    $('#group_chat_message').html('');
+                    $('#group_chat_history').html(data);
+                }
+            })
+        } else {
+            alert('Bạn chưa viết tin nhắn!');
+        }
 
-		});
+    });
 
-		function fetch_group_chat_history()
-		{
-			var group_chat_dialog_active = $('#is_active_group_chat_window').val();
-			var action = "fetch_data";
-			if(group_chat_dialog_active == 'yes')
-			{
-				$.ajax({
-					url:"function/group_chat.php",
-					method:"POST",
-					data:{action:action},
-					success:function(data)
-					{
-						$('#group_chat_history').html(data);
-					}
-				})
-			}
-		}
+    function fetch_group_chat_history() {
+        var group_chat_dialog_active = $('#is_active_group_chat_window').val();
+        var action = "fetch_data";
+        if (group_chat_dialog_active == 'yes') {
+            $.ajax({
+                url: "function/group_chat.php",
+                method: "POST",
+                data: {
+                    action: action
+                },
+                success: function(data) {
+                    $('#group_chat_history').html(data);
+                }
+            })
+        }
+    }
 
-    $('#uploadFile').on('change', function(){
+    $('#uploadFile').on('change', function() {
         $('#uploadImage').ajaxSubmit({
             target: "#group_chat_message",
             resetForm: true
         });
     });
 
-});
-
- </script>
+}); 
+</script>

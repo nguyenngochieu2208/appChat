@@ -24,7 +24,7 @@
 
 
 
-    
+
 
 
 
@@ -69,11 +69,11 @@
             <form class="col-12 col-sm-12" method="POST">
                 <div class="input-group">
                     <span class="input-group-text">Name</span>
-                    <input name="nameUser" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <input  name="nameUser" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
                 </div>
                 <div class="input-group">
                     <span class="input-group-text">Gmail</span>
-                    <input name="gmailUser" type="text" class="form-control"
+                    <input id="gmailUser" name="gmailUser" type="text" class="form-control"
                         aria-label="Amount (to the nearest dollar)">
                 </div>
                 <div class="input-group">
@@ -91,6 +91,8 @@
         </div>
     </div>
 </div>
+
+    
 </body>
 </html>
 

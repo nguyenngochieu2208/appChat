@@ -87,7 +87,7 @@ function print_chat_history($from_idUser, $to_idUser, $conn){
 					$message = $rows['message'];
 				}
 
-				$nameUser = '<b class="text-danger">'.get_user_name($rows['from_idUser'], $conn).'</b>';
+				// $nameUser = '<b class="text-danger">'.get_user_name($rows['from_idUser'], $conn).'</b>';
 				$background_mess= 'background-color: #dcdcdc;';
 
 				$mess = '<div class="d-flex justify-content-between m-0 p-0" style= "">
@@ -181,7 +181,7 @@ function fetch_group_chat_history($conn)
 					$message = $rows['message'];
 				}
 
-				$nameUser = '<b class="text-danger">'.get_user_name($rows['from_idUser'], $conn).'</b>';
+				// $nameUser = '<b class="text-danger">'.get_user_name($rows['from_idUser'], $conn).'</b>';
 				$background_mess= 'background-color: #dcdcdc;';
 
 				$mess = '<div class="d-flex justify-content-between m-0 p-0" style= "">
