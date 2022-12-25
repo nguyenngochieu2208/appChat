@@ -10,7 +10,6 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/login.css">
 
-    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 </head>
 
 <body>
@@ -59,7 +58,10 @@
             //pusher begin
 
             require __DIR__ . '/vendor/autoload.php';
-            $options = array(
+            require 'Pusher.php';
+
+            
+            $options = array(   
                 'cluster' => 'ap1',
                 'useTLS' => true
               );
@@ -76,21 +78,26 @@
             $kqs = $dat2->fetch();  
             $statusUser = $kqs['statusUser'];    
             
-            // array(   
-            //     'nameUser' => $nameUser,
-            //     'statusUser' => $statusUser
-            // ); 
             $gmailUser = $_POST['gmailphoneUser'];
             if($dat2 != false){ 
-                $data['message'] = $gmailUser;
+                $data['message'] = array(
+                    'nameUser' => $nameUser,
+                    'statusUser' => $statusUser
+                );                  
 
+<<<<<<< HEAD
                 $pusher->trigger('Chat', 'getGmail', $data);
                 // print_r($data); 
 
                 
+=======
+                $pusher->trigger('Chat', 'getStatus', $data);
+
+
+>>>>>>> 8914edb560e5d32b5a0f25d4410964c117f817c0
                 header("location: appChat.php");
               
-            }
+            }   
             else{   
                 echo "Connect DataBase Fail";       
             }      
