@@ -177,19 +177,26 @@ $(document).ready(function() {
         var to_idUser = $(this).attr('idUser');
         var message = $.trim($('#message_' + to_idUser).val());
         if (message != '') {
-            $.ajax({
-                url: "function/insertChat.php",
-                method: "POST",
-                data: {
-                    to_idUser: to_idUser,
-                    message: message,
-                },
-                success: function(data) {
-                    var element = $('#message_' + to_idUser).emojioneArea();
-                    element[0].emojioneArea.setText('');
-                    $('#chat_history_' + to_idUser).html(data);
-                }
-            })
+
+           
+
+    });
+
+
+
+            // $.ajax({
+            //     url: "function/insertChat.php",
+            //     method: "POST",
+            //     data: {
+            //         to_idUser: to_idUser,
+            //         message: message,
+            //     },
+            //     success: function(data) {
+            //         var element = $('#message_' + to_idUser).emojioneArea();
+            //         element[0].emojioneArea.setText('');
+            //         $('#chat_history_' + to_idUser).html(data);
+            //     }
+            // })
         } else {
             alert('Bạn chưa viết tin nhắn!');
         }

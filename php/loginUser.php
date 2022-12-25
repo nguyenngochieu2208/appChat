@@ -10,7 +10,6 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/login.css">
 
-    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 </head>
 
 <body>
