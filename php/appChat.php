@@ -2,6 +2,20 @@
  
     session_start();
     $nameUser = $_SESSION['nameUser'];  
+
+
+    $sql = "
+    SELECT * FROM inforuser
+    WHERE idUser != '".$_SESSION['idUser']."' 
+    "; 
+    $statement = $conn->prepare($sql);
+
+    $statement->execute();
+
+    $result = $statement->fetchAll();   
+
+
+
  ?>
  <!DOCTYPE html>
  <html lang="en">
@@ -51,8 +65,8 @@
          </div> 
 
          <div class="rowUser">
-             <div class="w-100" id="user_details"></div>
-             
+             <div class="w-100" id="user_details">
+             </div>
          </div>
          <br />
          <br />
@@ -69,25 +83,38 @@
 
         Pusher.logToConsole = true;
 
-        var pusher = new Pusher('91d83c94dd13f066342b', {
+       
+        var pusher = new Pusher('504e1e3617aac7eed5cc', {
         cluster: 'ap1'
         });
 
 
-        var channel = pusher.subscribe('My-Chat');  
-        channel.bind('getU', function(data) {
-                $.ajax({
-                    url: "function/getUser.php",    
-                    method: "POST",
-                    data: {
-                        nameUser: nameUser,
-                        statusUser : statusUser
-                    },
-                    success: function(result) {
-                        $('#user_details').html(result);
-                    }
-                })
-        });
+        var channel = pusher.subscribe('Chat');
+        channel.bind('getGmail', function(data) {
+            alert(JSON.stringify(data));
+
+            var gmailUser = data['message'];
+            var tr;
+            tr = '<p>GmailUser:';
+            tr += gmailUser;
+            tr += '</p>';
+
+            $('#user_details').append(tr);
+
+
+        // $.ajax({
+        //             url: "function/getUser.php",    
+        //             method: "POST",
+        //             data: {
+        //                 nameUser: nameUser,
+        //                 statusUser : statusUser
+        //             },
+        //             success: function(result) {
+        //                 $('#user_details').html(result);
+        //             }
+        //         })
+            
+    });
 
     </script>
 
@@ -128,15 +155,15 @@ $(document).ready(function() {
     //     fetch_group_chat_history();
     // }, 3000);
 
-    // function getUser() {
-    //     $.ajax({
-    //         url: "function/getUser.php",
-    //         method: "POST",
-    //         success: function(data) {
-    //             $('#user_details').html(data);
-    //         }
-    //     })
-    // }
+    function getUser() {
+        $.ajax({
+            url: "function/getUser.php",
+            method: "POST",
+            success: function(data) {
+                $('#user_details').html(data);
+            }
+        })
+    }
 
 
     // tạo hộp nhắn tin

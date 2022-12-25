@@ -11,17 +11,17 @@ try {
 }
     
 
-// function get_user_name($idUser, $conn)
-// 	{	
-// 		$query = "SELECT nameUser FROM inforuser WHERE idUser = '$idUser'";
-// 		$statement = $conn->prepare($query);
-// 		$statement->execute();
-// 		$result = $statement->fetchAll();											
-// 		foreach($result as $rows)
-// 		{
-// 			return $rows['nameUser'];
-// 		}
-// 	}
+function get_user_name($idUser, $conn)
+	{	
+		$query = "SELECT nameUser FROM inforuser WHERE idUser = '$idUser'";
+		$statement = $conn->prepare($query);
+		$statement->execute();
+		$result = $statement->fetchAll();											
+		foreach($result as $rows)
+		{
+			return $rows['nameUser'];
+		}
+	}
 
 function print_chat_history($from_idUser, $to_idUser, $conn){
 	$query = "
